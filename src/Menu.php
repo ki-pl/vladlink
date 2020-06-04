@@ -9,7 +9,7 @@ use PDO;
 class Menu
 {
 	/**
-     *  Data to sanitize
+     *  Data 
      *  @var json
      */
     protected $data;
@@ -23,8 +23,6 @@ class Menu
 	/**
      *  Create a new menu.
      *
-     *  @param  json    $data
-     *  @param  array   $DB 
      *  @return Menu
      */
     public function __construct()
@@ -46,28 +44,26 @@ class Menu
         );
         $this->initDB();
     }
-
     /**
      *  init  
      *  
      */
     public function initDB() 
     {
-    	$query = 			"CREATE TABLE IF NOT EXISTS `menu` (
-							`id` int(11) NOT NULL AUTO_INCREMENT,
-							`id_category` int(11) NOT NULL,
-							`name` text NOT NULL,
-							`alias` text NOT NULL,
-							`level` int(11) DEFAULT '1',
-							`id_parent` int(11) NOT NULL DEFAULT '0',
-							PRIMARY KEY (`id`)
-							) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-							";
+    	$query ="CREATE TABLE IF NOT EXISTS `menu` (
+				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`id_category` int(11) NOT NULL,
+				`name` text NOT NULL,
+				`alias` text NOT NULL,
+				`level` int(11) DEFAULT '1',
+				`id_parent` int(11) NOT NULL DEFAULT '0',
+				PRIMARY KEY (`id`)
+				) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+				";
     	$this->DB->query($query);
     }
-
     /**
-     *  Load menu  
+     *  Load menu from Json
      *  
      */
     public function loadMenu(string $data) 
@@ -82,10 +78,8 @@ class Menu
         }
         $this->saveMenu();
     }
-
-
     /**
-     *  Save menu  
+     *  Save menu to DB 
      *  
      */
     public function saveMenu(array $data = array() ,int $ID_parent = 0,int $level = 1) 
@@ -121,13 +115,20 @@ class Menu
        	}
     	
     }
-
+    /**
+     *  Save file type_a.txt
+     *  
+     */
     public function generateType_A() 
     {
     	$filename='type_a.txt';
     	$content = $this->makeType_A();
     	file_put_contents($filename,$content);
     }
+    /**
+     *  Build file type_a.txt
+     *  
+     */
     private function makeType_A(int $ID_parent = 0, int $level=1,string $path = '/')
     {
     	$content = '';
@@ -141,14 +142,20 @@ class Menu
 		}
     	return $content;
     } 
-
+    /**
+     *  Save file type_b.txt
+     *  
+     */
     public function generateType_B() 
     {
     	$filename='type_b.txt';
     	$content = $this->makeType_B();
     	file_put_contents($filename,$content);
     }
-
+    /**
+     *  Build file type_b.txt
+     *  
+     */
     private function makeType_B(int $ID_parent = 0, int $level=1, int $max_level=2)
     {
     	$content = '';
@@ -165,7 +172,10 @@ class Menu
 		}
     	return $content;
     } 
-
+    /**
+     *  Print menu from BD
+     *  
+     */
     public function print() 
     {
     	$content = $this->makeType_A();
@@ -173,7 +183,6 @@ class Menu
     	print_r($content);
     	print_r('</pre>');
 	}
-
  	/**
      *  Data is Json? 
      *  
